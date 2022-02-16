@@ -1,0 +1,29 @@
+---
+dcos:
+  download: "https://downloads.dcos.io/dcos/stable/2.0.6/dcos_generate_config.sh"
+  #download_checksum: "sha256:55b096236a6de1a40259e6d8a8a21861c5333cbe2b9ba3e274d5de1534b095dc"
+  version: "2.0.6"
+  enterprise_dcos: false
+
+  selinux_mode: permissive
+
+  config:
+    # This is a direct yaml representation of the DC/OS config.yaml
+    # Please see https://docs.mesosphere.com/1.13/installing/production/advanced-configuration/configuration-reference/
+    # for parameter reference.
+    cluster_name: "sakku"
+    security: strict
+    bootstrap_url: http://192.168.50.31:8080
+    exhibitor_storage_backend: static
+    master_discovery: static
+    oauth_enabled: 'false'
+    master_list:
+      - 192.168.50.30
+    # This is an ip-detect script example which also stands for ip_detect_public_contents
+    # more info about ip-detect can be found here: https://docs.mesosphere.com/1.13/installing/production/deploying-dcos/installation/#create-an-ip-detection-script
+    ip_detect_contents: |
+      #! /usr/bin/env bash
+      set -o nounset -o errexit
+
+      export PATH=/usr/sbin:/usr/bin:$PATH
+      echo $(ip addr show enp0s8 | grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)

@@ -1,0 +1,68 @@
+---
+scenario:
+  name: vagrant_centos7
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+lint:
+  name: yamllint
+  options:
+    config-file: .yamllint.yml
+platforms:
+  - name: bootstrap1-centos7
+    box: centos/7
+    memory: 1024
+    cpus: 1
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
+    groups:
+      - bootstraps
+      - dcos
+  - name: master1-centos7
+    box: centos/7
+    memory: 2048
+    cpus: 2
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
+    groups:
+      - masters
+      - dcos
+  - name: agent1-centos7
+    box: centos/7
+    memory: 1024
+    cpus: 1
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
+    groups:
+      - agents_private
+      - agents
+      - dcos
+provisioner:
+  name: ansible
+  playbooks:
+    converge: same_version_config_update.yml
+    prepare: install_and_upgrade.yml
+  config_options:
+    defaults:
+      hash_behaviour: merge
+  env:
+    ANSIBLE_ROLES_PATH: "../../roles/"
+  inventory:
+    links:
+      group_vars: ../../group_vars/
+  lint:
+    name: ansible-lint
+    enabled: True
+
+verifier:
+  name: testinfra
+  lint:
+    name: flake8
+    enabled: False

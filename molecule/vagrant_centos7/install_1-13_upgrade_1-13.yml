@@ -1,0 +1,97 @@
+---
+- name: DC/OS Requirements
+  hosts: all
+  become: true
+  tasks:
+    - include_role:
+        name: dcos_requirements
+
+- name: "Setup and configure BOOTSTRAP nodes"
+  hosts: bootstraps
+  become: true
+  tasks:
+    - include_role:
+        name: dcos_bootstrap
+  vars:
+    dcos:
+      config:
+        bootstrap_url: "http://{{ hostvars[groups['bootstraps'][0]].ansible_facts.eth1.ipv4.address }}:8080"
+        master_list: ["{{ hostvars[groups['masters'][0]].ansible_facts.eth1.ipv4.address }}"]
+
+- name: "Setup and configure MASTER nodes"
+  hosts: masters
+  serial: 1
+  become: true
+  tasks:
+    - include_role:
+        name: dcos_master
+  vars:
+    dcos:
+      config:
+        bootstrap_url: "http://{{ hostvars[groups['bootstraps'][0]].ansible_facts.eth1.ipv4.address }}:8080"
+        master_list: ["{{ hostvars[groups['masters'][0]].ansible_facts.eth1.ipv4.address }}"]
+
+- name: "Setup and configure AGENT nodes"
+  hosts: agents
+  become: true
+  tasks:
+    - include_role:
+        name: dcos_agent
+  vars:
+    dcos:
+      config:
+        bootstrap_url: "http://{{ hostvars[groups['bootstraps'][0]].ansible_facts.eth1.ipv4.address }}:8080"
+        master_list: ["{{ hostvars[groups['masters'][0]].ansible_facts.eth1.ipv4.address }}"]
+
+- name: "WAIT for the cluster to stabilise before upgrade"
+  hosts: localhost
+  tasks:
+    - name: WAIT for the cluster to stabilise before upgrade
+      pause:
+        minutes: 1
+
+- name: "Upgrade and configure BOOTSTRAP nodes"
+  hosts: bootstraps
+  become: true
+  tasks:
+    - include_role:
+        name: dcos_bootstrap
+  vars:
+    dcos:
+      download: "https://downloads.dcos.io/dcos/stable/1.13.4/dcos_generate_config.sh"
+      version: "1.13.4"
+      version_to_upgrade_from: "1.13.4"
+      config:
+        bootstrap_url: "http://{{ hostvars[groups['bootstraps'][0]].ansible_facts.eth1.ipv4.address }}:8080"
+        master_list: ["{{ hostvars[groups['masters'][0]].ansible_facts.eth1.ipv4.address }}"]
+
+- name: "Upgrade and configure MASTER nodes"
+  hosts: masters
+  serial: 1
+  become: true
+  tasks:
+    - include_role:
+        name: dcos_master
+  vars:
+    dcos:
+      download: "https://downloads.dcos.io/dcos/stable/1.13.4/dcos_generate_config.sh"
+      version: "1.13.4"
+      version_to_upgrade_from: "1.13.4"
+      config:
+        bootstrap_url: "http://{{ hostvars[groups['bootstraps'][0]].ansible_facts.eth1.ipv4.address }}:8080"
+        master_list: ["{{ hostvars[groups['masters'][0]].ansible_facts.eth1.ipv4.address }}"]
+
+- name: "Upgrade and configure AGENT nodes"
+  hosts: agents
+  become: true
+  tasks:
+    - include_role:
+        name: dcos_agent
+  vars:
+    dcos:
+      download: "https://downloads.dcos.io/dcos/stable/1.13.4/dcos_generate_config.sh"
+      version: "1.13.4"
+      version_to_upgrade_from: "1.13.4"
+      config:
+        bootstrap_url: "http://{{ hostvars[groups['bootstraps'][0]].ansible_facts.eth1.ipv4.address }}:8080"
+        master_list: ["{{ hostvars[groups['masters'][0]].ansible_facts.eth1.ipv4.address }}"]

@@ -1,0 +1,13 @@
+---
+- name: DC/OS Requirements
+  hosts: all
+  become: true
+  tasks:
+    - include_role:
+        name: dcos_requirements
+- name: DC/OS Requirements
+  hosts: agents
+  become: true
+  tasks:
+    - include_role:
+        name: dcos_gpu

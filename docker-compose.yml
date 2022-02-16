@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  nginx:
+    image: nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - /opt/dcos-install:/usr/share/nginx/html

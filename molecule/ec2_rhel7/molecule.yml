@@ -1,0 +1,53 @@
+---
+scenario:
+  name: ec2_rhel7
+driver:
+  name: ec2
+platforms:
+  - name: bootstrap1-rhel7-${USER:-ci}-${HOSTNAME:-local}
+    image: ami-011b3ccf1bd6db744
+    region: us-east-1
+    instance_type: m5.xlarge
+    groups:
+      - bootstraps
+      - dcos
+  - name: master1-rhel7-${USER:-ci}-${HOSTNAME:-local}
+    image: ami-011b3ccf1bd6db744
+    region: us-east-1
+    instance_type: m5.xlarge
+    groups:
+      - masters
+      - dcos
+  - name: agent1-rhel7-${USER:-ci}-${HOSTNAME:-local}
+    image: ami-011b3ccf1bd6db744
+    region: us-east-1
+    instance_type: m5.xlarge
+    groups:
+      - agents_private
+      - agents
+      - dcos
+
+provisioner:
+  name: ansible
+  log: true
+  playbooks:
+    ec2:
+      create: ../ec2/create.yml
+      destroy: ../ec2/destroy.yml
+    converge: ../ec2/same_version_config_update.yml
+    prepare: ../ec2/install_and_upgrade.yml
+  config_options:
+    defaults:
+      hash_behaviour: merge
+  env:
+    ANSIBLE_ROLES_PATH: "../../roles/"
+  inventory:
+    links:
+      group_vars: ../../group_vars/
+  lint:
+    name: ansible-lint
+    enabled: True
+lint:
+  name: yamllint
+  options:
+    config-file: .yamllint.yml

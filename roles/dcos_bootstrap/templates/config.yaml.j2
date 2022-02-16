@@ -1,0 +1,1 @@
+{{ dcos_config | combine({'bootstrap_url': dcos_config['bootstrap_url']+'/'+dcos_version_specifier+'/genconf/serve' }) | to_yaml }}

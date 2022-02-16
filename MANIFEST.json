@@ -1,0 +1,52 @@
+{
+    "collection_info": {
+        "license": [
+            "Apache-2.0"
+        ], 
+        "name": "cluster", 
+        "repository": "https://github.com/dcos/dcos-ansible", 
+        "tags": [
+            "dcos", 
+            "mesosphere", 
+            "cloud", 
+            "cluster", 
+            "kubernetes"
+        ], 
+        "documentation": null, 
+        "namespace": "dcos", 
+        "version": "0.58.0", 
+        "dependencies": {}, 
+        "authors": [
+            "jrx", 
+            "rimusz", 
+            "fatz", 
+            "sebbrandt87", 
+            "bernadinm", 
+            "geekbass", 
+            "yankcrime", 
+            "victhar", 
+            "sbaier1", 
+            "muconsulting", 
+            "matt2000", 
+            "linben", 
+            "keith-mcclellan", 
+            "driabich", 
+            "aayvazyan", 
+            "The-Loeki", 
+            "MrMarvin"
+        ], 
+        "readme": "README.md", 
+        "license_file": null, 
+        "homepage": "https://dcos.io", 
+        "issues": "https://github.com/dcos/dcos-ansible/issues", 
+        "description": "Ansible roles to manage a Mesosphere DC/OS clusters lifecycle"
+    }, 
+    "file_manifest_file": {
+        "format": 1, 
+        "ftype": "file", 
+        "chksum_sha256": "6a99ecbd20c57f772d0785c40b707ca9debc8af090026549442ac7651502f306", 
+        "name": "FILES.json", 
+        "chksum_type": "sha256"
+    }, 
+    "format": 1
+}

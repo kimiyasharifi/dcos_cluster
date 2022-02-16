@@ -1,0 +1,35 @@
+---
+namespace: dcos
+name: cluster
+version: 0.58.0
+readme: README.md
+description: Ansible roles to manage a Mesosphere DC/OS clusters lifecycle
+authors:
+  - jrx
+  - rimusz
+  - fatz
+  - sebbrandt87
+  - bernadinm
+  - geekbass
+  - yankcrime
+  - victhar
+  - sbaier1
+  - muconsulting
+  - matt2000
+  - linben
+  - keith-mcclellan
+  - driabich
+  - aayvazyan
+  - The-Loeki
+  - MrMarvin
+license:
+  - Apache-2.0
+tags:
+  - dcos
+  - mesosphere
+  - cloud
+  - cluster
+  - kubernetes
+repository: "https://github.com/dcos/dcos-ansible"
+homepage: "https://dcos.io"
+issues: "https://github.com/dcos/dcos-ansible/issues"
